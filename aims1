@@ -1,0 +1,33 @@
+import pandas as pd
+import numpy as np
+
+# Sample data
+data = {
+    'House_color': ['Red', 'Green', 'Blue', 'Green', 'Red'],
+    'House_size': ['LIG', 'MIG', 'LIG', 'HIG', 'MIG']
+}
+
+# Create a DataFrame
+df = pd.DataFrame(data)
+
+# Ordinal Encoding Function
+def ordinal_encode(df, column):
+    unique_values = sorted(df[column].unique())
+    encoding_dict = {value: idx for idx, value in enumerate(unique_values)}
+    df[column + '_ordinal'] = df[column].map(encoding_dict)
+    return df
+
+# One-Hot Encoding Function
+def one_hot_encode(df, column):
+    one_hot = pd.get_dummies(df[column], prefix=column)
+    df = pd.concat([df, one_hot], axis=1)
+    return df
+
+# Perform Ordinal Encoding on 'Color'
+df = ordinal_encode(df, 'House_color')
+
+# Perform One-Hot Encoding on 'Size'
+df = one_hot_encode(df, 'House_size')
+
+# Display the final DataFrame
+print(df)
